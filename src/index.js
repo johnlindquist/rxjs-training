@@ -1,27 +1,22 @@
-const createObservable = subscribe => ({
-  subscribe,
-  pipe(f) {
-    return f(this)
-  }
-})
-
-const map = fn => observable => {
-  return createObservable(next => {
-    observable.subscribe(value => {
-      next(fn(value))
-    })
-  })
-}
-
-const next = value => {
+//observer
+const callback = value => {
   console.log(value)
 }
 
-const subscribe = next => {
-  next(10)
-  next(11)
+//observable
+const callbackCaller = callback => {
+  callback(1)
+  callback(2)
 }
 
-createObservable(subscribe)
-  .pipe(map(x => x + 1))
-  .subscribe(next)
+//map
+const transform = x => x + 1
+
+//internals
+const callWithTransform = (transform, callback) => {
+  const newCallback = value => callback(transform(value))
+
+  return newCallback
+}
+//subscribe
+callbackCaller(callWithTransform(transform, callback))
