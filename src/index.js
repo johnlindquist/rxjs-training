@@ -12,10 +12,10 @@ const callbackCaller = callback => {
 const transform = x => x + 1
 
 //internals
-const createNewCallbackFromTransform = (transform, callback) => {
+const transformThenCreateNewCallback = (transform, callback) => {
   const newCallback = value => callback(transform(value))
 
   return newCallback
 }
 //subscribe
-callbackCaller(createNewCallbackFromTransform(transform, callback))
+callbackCaller(transformThenCreateNewCallback(transform, callback))
